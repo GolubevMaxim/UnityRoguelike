@@ -1,48 +1,49 @@
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 namespace Scripts.Player
 {
     public class Movement : NetworkBehaviour
     {
-        public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
-
-        public override void OnNetworkSpawn()
-        {
-            if (IsOwner)
-            {
-                Move();
-            }
-        }
-
-        public void Move()
-        {
-            if (NetworkManager.Singleton.IsServer)
-            {
-                var randomPosition = GetRandomPositionOnPlane();
-                transform.position = randomPosition;
-                Position.Value = randomPosition;
-            }
-            else
-            {
-                SubmitPositionRequestServerRpc();
-            }
-        }
+        [SerializeField] private float _speed;
+        private Vector3 _localPosition;
+        private NetworkTransform _networkTransform;
 
         [ServerRpc]
-        void SubmitPositionRequestServerRpc(ServerRpcParams rpcParams = default)
+        private void ChangePositionToServerRpc(Vector3 newPos)
         {
-            Position.Value = GetRandomPositionOnPlane();
+            _networkTransform.transform.position = newPos;
         }
 
-        static Vector3 GetRandomPositionOnPlane()
+        private void OnEnable()
         {
-            return new Vector3(Random.Range(-100f, 100f),  Random.Range(-100f, 100f), 1f);
+            _localPosition = Vector3.zero;
+            _networkTransform = GetComponent<NetworkTransform>();
         }
 
-        void Update()
+        private void Update()
         {
-            transform.position = Position.Value;
+            if (!IsOwner) { return; }
+            
+            var inputX = Input.GetAxis("Horizontal");
+            var inputY = Input.GetAxis("Vertical");
+
+            var directionVec = new Vector3(inputX, inputY, 0);
+            directionVec.Normalize();
+
+
+            _localPosition += directionVec * (Time.deltaTime * _speed);
+            
+            if (IsClient)
+            {
+                ChangePositionToServerRpc(_localPosition);
+            }
+
+            if (IsServer)
+            {
+                _networkTransform.transform.position = _localPosition;
+            }
         }
     }
 }
