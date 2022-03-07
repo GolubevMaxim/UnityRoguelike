@@ -2,7 +2,7 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 
-namespace Scripts.Player
+namespace Player
 {
     public class Movement : NetworkBehaviour
     {
@@ -24,10 +24,10 @@ namespace Scripts.Player
 
         private void Update()
         {
-            if (!IsOwner) { return; }
+            if (!IsOwner) return;
             
-            var inputX = Input.GetAxis("Horizontal");
-            var inputY = Input.GetAxis("Vertical");
+            var inputX = Input.GetAxisRaw("Horizontal");
+            var inputY = Input.GetAxisRaw("Vertical");
 
             var directionVec = new Vector3(inputX, inputY, 0);
             directionVec.Normalize();
