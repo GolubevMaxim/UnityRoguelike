@@ -14,8 +14,7 @@ namespace Client
 
             Spawn(playerId, position);
         }
-        
-        
+
         [MessageHandler((ushort) NetworkManager.ServerToClientId.SendAllPlayersPosition)]
         private static void GetSpawnAllPlayerMessage(Message message)
         {

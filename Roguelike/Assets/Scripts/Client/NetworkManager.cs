@@ -18,12 +18,14 @@ namespace Client
             NewPlayerSpawned = 1,
             PlayerPositionChange,
             SendAllPlayersPosition,
+            PlayerDisconnecting,
         }
 
         public enum ClientToServerId : ushort
         {
             SpawnRequest = 1,
-            DirectionInput = 2,
+            DirectionInput,
+            ClientDisconnecting,
         }
         
         private static NetworkManager _singleton;
@@ -54,8 +56,9 @@ namespace Client
 
             _isClientRunning = true;
             Client = new RiptideNetworking.Client();
-            Client.Connected += OnConnection;
             
+            Client.Connected += OnConnection;
+
             Client.Connect($"{ip}:{port}");
         }
         
@@ -78,6 +81,7 @@ namespace Client
             if (!_isClientRunning) return;
             
             Client.Disconnect();
+            
             _isClientRunning = false;
         }
     }
