@@ -21,14 +21,14 @@ namespace Client
 
         private static void SendDirection(Vector2 direction)
         {
-            var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ClientToServerId.DirectionVector);
+            var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ClientToServerId.DirectionInput);
 
             message.AddVector2(direction);
             
             NetworkManager.Singleton.Client.Send(message);
         }
 
-        [MessageHandler((ushort) NetworkManager.ServerToClientId.PositionChange)]
+        [MessageHandler((ushort) NetworkManager.ServerToClientId.PlayerPositionChange)]
         private static void GetNewPositionMessage(Message message)
         {
             SetPosition(message.GetUShort(), message.GetVector3());

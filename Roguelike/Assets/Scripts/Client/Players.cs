@@ -5,6 +5,6 @@ namespace Client
 {
     public class Players : MonoBehaviour
     {
-        public static Dictionary<ushort, GameObject> Dictionary = new Dictionary<ushort, GameObject>();
+        public static readonly Dictionary<ushort, GameObject> Dictionary = new();
     }
 }

@@ -5,7 +5,7 @@ namespace Server
 {
     public class PlayersMovement : MonoBehaviour
     {
-        [MessageHandler((ushort) NetworkManager.ClientToServerId.DirectionVector)]
+        [MessageHandler((ushort) NetworkManager.ClientToServerId.DirectionInput)]
         private static void GetSpawnPlayerMessage(ushort playerId, Message message)
         {
             MovePlayer(playerId, message.GetVector2());
@@ -30,7 +30,7 @@ namespace Server
             Players.PlayersDictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
 
-            var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ServerToClientId.PositionChange);
+            var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ServerToClientId.PlayerPositionChange);
             
             message.AddUShort(playerId);
             message.AddVector3(player.PlayerGameObject.transform.position);

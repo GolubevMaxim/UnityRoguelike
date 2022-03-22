@@ -1,4 +1,3 @@
-using RiptideNetworking;
 using RiptideNetworking.Utils;
 using UnityEngine;
 
@@ -6,19 +5,26 @@ namespace Server
 {
     public class NetworkManager : MonoBehaviour
     {
-        private static NetworkManager _singleton;
+        [SerializeField] private ushort port;
+        [SerializeField] private ushort maxClientCount;
+
+        private bool _isServerRunning;
+        public RiptideNetworking.Server Server { get; set; }
+
         public enum ServerToClientId : ushort
         {
-            PlayerSpawned = 1,
-            PositionChange = 2,
+            NewPlayerSpawned = 1,
+            PlayerPositionChange,
+            SendAllPlayersPosition,
         }
 
         public enum ClientToServerId : ushort
         {
-            Spawn = 1,
-            DirectionVector = 2,
+            SpawnRequest = 1,
+            DirectionInput,
         }
-
+        
+        private static NetworkManager _singleton;
         public static NetworkManager Singleton
         {
             get => _singleton;
@@ -33,13 +39,6 @@ namespace Server
                 }
             }
         }
-
-        public RiptideNetworking.Server Server { get; set; }
-
-        [SerializeField] private ushort port;
-        [SerializeField] private ushort maxClientCount;
-
-        private bool _isServerRunning;
 
         private void Awake()
         {

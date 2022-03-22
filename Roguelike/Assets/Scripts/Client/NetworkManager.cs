@@ -7,6 +7,25 @@ namespace Client
 {
     public class NetworkManager : MonoBehaviour
     {
+        [SerializeField] private ushort port;
+        [SerializeField] private string ip;
+
+        private bool _isClientRunning;
+        public RiptideNetworking.Client Client { get; set; }
+
+        public enum ServerToClientId : ushort
+        {
+            NewPlayerSpawned = 1,
+            PlayerPositionChange,
+            SendAllPlayersPosition,
+        }
+
+        public enum ClientToServerId : ushort
+        {
+            SpawnRequest = 1,
+            DirectionInput = 2,
+        }
+        
         private static NetworkManager _singleton;
         public static NetworkManager Singleton
         {
@@ -21,25 +40,6 @@ namespace Client
                     Destroy(value);
                 }
             }
-        }
-
-        public RiptideNetworking.Client Client { get; set; }
-        
-        private bool _isClientRunning;
-
-        [SerializeField] private ushort port;
-        [SerializeField] private string ip;
-        
-        public enum ServerToClientId : ushort
-        {
-            PlayerSpawned = 1,
-            PositionChange = 2,
-        }
-
-        public enum ClientToServerId : ushort
-        {
-            Spawn = 1,
-            DirectionVector = 2,
         }
 
         private void Awake()
@@ -61,7 +61,7 @@ namespace Client
         
         private void OnConnection(object sender, EventArgs e)
         {
-            var message = Message.Create(MessageSendMode.reliable, ClientToServerId.Spawn);
+            var message = Message.Create(MessageSendMode.reliable, ClientToServerId.SpawnRequest);
             
             Client.Send(message);
         }

@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using RiptideNetworking;
+﻿using RiptideNetworking;
+using Server;
 using UnityEngine;
 
 namespace Client
 {
     public class PlayerSpawner : MonoBehaviour
     {
-        [MessageHandler((ushort) NetworkManager.ServerToClientId.PlayerSpawned)]
+        [MessageHandler((ushort) NetworkManager.ServerToClientId.NewPlayerSpawned)]
         private static void GetSpawnPlayerMessage(Message message)
         {
             var playerId = message.GetUShort();
