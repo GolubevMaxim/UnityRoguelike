@@ -16,8 +16,13 @@ namespace Server
         {
             Players.PlayersDictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
-            
-            player.transform.Translate(direction.normalized);
+
+            var previousTime = player.PreviousTime;
+
+            var deltaTime = Time.time - previousTime;
+            player.PlayerGameObject.transform.Translate(direction.normalized * deltaTime * player.Speed);
+
+            Players.PlayersDictionary[playerId].PreviousTime = Time.time;
         }
 
         private static void SendPosition(ushort playerId)
@@ -28,7 +33,7 @@ namespace Server
             var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ServerToClientId.PositionChange);
             
             message.AddUShort(playerId);
-            message.AddVector3(player.transform.position);
+            message.AddVector3(player.PlayerGameObject.transform.position);
             
             NetworkManager.Singleton.Server.SendToAll(message);
         }

@@ -11,8 +11,9 @@ namespace Server
         {
             Debug.Log("Server get spawn cmd");
             var player = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity);
+            var newPlayer = new Player(player, 100);
      
-            Players.PlayersDictionary.Add(playerId, player);
+            Players.PlayersDictionary.Add(playerId, newPlayer);
             SendPlayerSpawn(playerId);
         }
 
@@ -24,7 +25,7 @@ namespace Server
             var message = Message.Create(MessageSendMode.reliable, NetworkManager.ServerToClientId.PlayerSpawned);
 
             message.AddUShort(playerId);
-            message.AddVector3(player.transform.position);
+            message.AddVector3(player.PlayerGameObject.transform.position);
             
             NetworkManager.Singleton.Server.SendToAll(message);
         }
