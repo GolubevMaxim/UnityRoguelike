@@ -14,7 +14,7 @@ namespace Server
         
         private static void MovePlayer(ushort playerId, Vector2 direction)
         {
-            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            Players.Dictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
 
             var previousTime = player.PreviousTime;
@@ -22,12 +22,12 @@ namespace Server
             var deltaTime = Time.time - previousTime;
             player.PlayerGameObject.transform.Translate(direction.normalized * deltaTime * player.Speed);
 
-            Players.PlayersDictionary[playerId].PreviousTime = Time.time;
+            Players.Dictionary[playerId].PreviousTime = Time.time;
         }
 
         private static void SendPosition(ushort playerId)
         {
-            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            Players.Dictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
 
             var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ServerToClientId.PlayerPositionChange);

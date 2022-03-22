@@ -4,6 +4,6 @@ namespace Server
 {
     public static class Players
     {
-        public static readonly Dictionary<ushort, Player> PlayersDictionary = new();
+        public static readonly Dictionary<ushort, Player> Dictionary = new();
     }
 }

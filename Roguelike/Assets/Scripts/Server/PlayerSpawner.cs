@@ -11,8 +11,9 @@ namespace Server
             var player = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity);
             var newPlayer = new Player(player, 100);
      
-            Players.PlayersDictionary.Add(playerId, newPlayer);
+            Players.Dictionary.Add(playerId, newPlayer);
             SendNewPlayerSpawn(playerId);
+            SendAllPlayers(playerId);
         }
 
         private static void SendAllPlayers(ushort playerId)
@@ -20,11 +21,21 @@ namespace Server
             var message = Message.Create(MessageSendMode.reliable,
                 NetworkManager.ServerToClientId.SendAllPlayersPosition);
 
+            var playerCount = (ushort) Players.Dictionary.Count;
+            message.AddUShort(playerCount);
+
+            foreach (var key in Players.Dictionary.Keys)
+            {
+                message.AddUShort(key);
+                message.AddVector3(Players.Dictionary[key].PlayerGameObject.transform.position);
+            }
+            
+            NetworkManager.Singleton.Server.Send(message, playerId);
         } 
         
         private static void SendNewPlayerSpawn(ushort playerId)
         {
-            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            Players.Dictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
             
             var message = Message.Create(MessageSendMode.reliable, NetworkManager.ServerToClientId.NewPlayerSpawned);
