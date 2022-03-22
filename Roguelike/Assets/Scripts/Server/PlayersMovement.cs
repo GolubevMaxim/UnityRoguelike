@@ -14,15 +14,21 @@ namespace Server
         
         private static void MovePlayer(ushort playerId, Vector2 direction)
         {
-            Players.PlayersDictionary[playerId].transform.Translate(direction.normalized );
+            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            if (player == null) return;
+            
+            player.transform.Translate(direction.normalized);
         }
 
         private static void SendPosition(ushort playerId)
         {
+            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            if (player == null) return;
+
             var message = Message.Create(MessageSendMode.unreliable, NetworkManager.ServerToClientId.PositionChange);
             
             message.AddUShort(playerId);
-            message.AddVector3(Players.PlayersDictionary[playerId].transform.position);
+            message.AddVector3(player.transform.position);
             
             NetworkManager.Singleton.Server.SendToAll(message);
         }

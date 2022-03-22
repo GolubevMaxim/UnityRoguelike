@@ -18,10 +18,13 @@ namespace Server
 
         private static void SendPlayerSpawn(ushort playerId)
         {
+            Players.PlayersDictionary.TryGetValue(playerId, out var player);
+            if (player == null) return;
+            
             var message = Message.Create(MessageSendMode.reliable, NetworkManager.ServerToClientId.PlayerSpawned);
 
             message.AddUShort(playerId);
-            message.AddVector3(Players.PlayersDictionary[playerId].transform.position);
+            message.AddVector3(player.transform.position);
             
             NetworkManager.Singleton.Server.SendToAll(message);
         }

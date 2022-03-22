@@ -36,12 +36,10 @@ namespace Client
 
         private static void SetPosition(ushort playerId, Vector3 position)
         {
-            Debug.Log(playerId);
-            foreach (var key in Players.Dictionary.Keys)
-            {
-                Debug.Log($"{key}: {Players.Dictionary[key]}");
-            }
-            Players.Dictionary[playerId].gameObject.transform.position = position;
+            Players.Dictionary.TryGetValue(playerId, out var player);
+            if (player == null) return;
+
+            player.gameObject.transform.position = position;
         }
 
         private void OnDestroy()

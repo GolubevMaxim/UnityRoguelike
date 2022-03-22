@@ -11,9 +11,7 @@ namespace Client
         {
             var playerId = message.GetUShort();
             var position = message.GetVector3();
-            
-            Debug.Log($"sosi {playerId}: {position}");
-            
+
             Spawn(playerId, position);
         }
         

@@ -57,13 +57,12 @@ namespace Client
             Client.Connected += OnConnection;
             
             Client.Connect($"{ip}:{port}");
-            Debug.Log("button work");
         }
         
         private void OnConnection(object sender, EventArgs e)
         {
             var message = Message.Create(MessageSendMode.reliable, ClientToServerId.Spawn);
-            Debug.Log("event work");
+            
             Client.Send(message);
         }
 
