@@ -8,6 +8,9 @@ namespace Server
         private float _previousTime;
         private float _speed;
 
+        public bool InDash = false; 
+        public float DashTime = 0.3f;
+
         public Player(GameObject gameObject, float speed)
         {
             _gameObject = gameObject;

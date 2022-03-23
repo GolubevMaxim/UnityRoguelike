@@ -26,6 +26,7 @@ namespace Client
             SpawnRequest = 1,
             DirectionInput,
             ClientDisconnecting,
+            Dash,
         }
         
         private static NetworkManager _singleton;
