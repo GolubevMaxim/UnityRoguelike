@@ -513,7 +513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 143.73999, y: -40.497986}
+  m_AnchoredPosition: {x: 143.73999, y: -40.498047}
   m_SizeDelta: {x: 287.489, y: 80.99597}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597780136
@@ -958,7 +958,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1916302747}
   - component: {fileID: 1916302748}
-  - component: {fileID: 1916302749}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -993,19 +992,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6584096022d45b5a311648b003e9a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 8364813967892523588, guid: cb66098248f048b4088315f145f6a247, type: 3}
---- !u!114 &1916302749
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1916302744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4b17f04c77429dbe12d92e9a6d2f50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  playerPrefabServer: {fileID: 8364813967892523588, guid: cb66098248f048b4088315f145f6a247, type: 3}
+  playerPrefabClient: {fileID: 8364813967892523588, guid: 7ddff82654539b244b04a5fcd9092cf0, type: 3}
+  playerPrefabLocalClient: {fileID: 8364813967892523588, guid: 9dfa647d47bfdd343a17d13942474265, type: 3}
 --- !u!1 &2116860247
 GameObject:
   m_ObjectHideFlags: 0

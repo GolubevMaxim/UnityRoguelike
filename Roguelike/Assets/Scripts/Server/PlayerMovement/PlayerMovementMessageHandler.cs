@@ -18,7 +18,7 @@ namespace Server.PlayerMovement
         }
         
         [MessageHandler((ushort) NetworkManager.ClientToServerId.DirectionInput)]
-        private static void GetSpawnPlayerMessage(ushort playerId, Message message)
+        private static void GetPlayerMovementMessage(ushort playerId, Message message)
         {
             var moveDirection = message.GetVector2();
             Players.Dictionary.TryGetValue(playerId, out var player);

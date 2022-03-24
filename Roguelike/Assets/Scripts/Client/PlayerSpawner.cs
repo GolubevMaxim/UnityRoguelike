@@ -1,5 +1,4 @@
 ﻿using RiptideNetworking;
-using Server;
 using UnityEngine;
 
 namespace Client
@@ -28,14 +27,18 @@ namespace Client
             {
                 var playerId = message.GetUShort();
                 var position = message.GetVector3();
-
+                
                 Spawn(playerId, position);
             }
         }
         
         private static void Spawn(ushort id, Vector3 position)
         {
-            var player = Instantiate(GameLogic.Singleton.PlayerPrefab, position, Quaternion.identity).gameObject;
+            var playerPrefab = NetworkManager.Singleton.Client.Id == id
+                ? GameLogic.Singleton.PlayerPrefabLocalClient
+                : GameLogic.Singleton.PlayerPrefabClient;
+                
+            var player = Instantiate(playerPrefab, position, Quaternion.identity).gameObject;
             Players.Dictionary.Add(id, player);
         }
     }

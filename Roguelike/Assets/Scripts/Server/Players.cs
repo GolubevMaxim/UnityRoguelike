@@ -9,7 +9,7 @@ namespace Server
 
         public static void Spawn(ushort playerId, Vector3 position)
         {
-            var player = Object.Instantiate(GameLogic.Singleton.PlayerPrefab, position, Quaternion.identity);
+            var player = Object.Instantiate(GameLogic.Singleton.PlayerPrefabServer, position, Quaternion.identity);
             
             Dictionary.Add(playerId, player);
         }
