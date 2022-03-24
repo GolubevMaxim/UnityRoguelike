@@ -77,7 +77,7 @@ namespace Server
             if (player == null) return;
             
             Players.Dictionary.Remove(playerId);
-            Destroy(player.PlayerGameObject);
+            Destroy(player);
         }
         
         private static void SendPlayerDespawn(ushort playerId)

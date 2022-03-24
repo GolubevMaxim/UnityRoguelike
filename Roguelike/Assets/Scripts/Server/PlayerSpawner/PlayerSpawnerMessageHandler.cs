@@ -1,17 +1,14 @@
 ﻿using RiptideNetworking;
 using UnityEngine;
 
-namespace Server
+namespace Server.PlayerSpawner
 {
-    public class PlayerSpawner : MonoBehaviour
+    public class PlayerSpawnerMessageHandler : MonoBehaviour
     {
         [MessageHandler((ushort) NetworkManager.ClientToServerId.SpawnRequest)]
         private static void GetPlayerSpawnRequest(ushort playerId, Message message)
         {
-            var player = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity);
-            var newPlayer = new Player(player, 100);
-     
-            Players.Dictionary.Add(playerId, newPlayer);
+            Players.Spawn(playerId, Vector3.zero);
             SendNewPlayerSpawn(playerId);
             SendAllPlayers(playerId);
         }
@@ -27,7 +24,7 @@ namespace Server
             foreach (var key in Players.Dictionary.Keys)
             {
                 message.AddUShort(key);
-                message.AddVector3(Players.Dictionary[key].PlayerGameObject.transform.position);
+                message.AddVector3(Players.Dictionary[key].transform.position);
             }
             
             NetworkManager.Singleton.Server.Send(message, playerId);
@@ -41,7 +38,7 @@ namespace Server
             var message = Message.Create(MessageSendMode.reliable, NetworkManager.ServerToClientId.NewPlayerSpawned);
 
             message.AddUShort(playerId);
-            message.AddVector3(player.PlayerGameObject.transform.position);
+            message.AddVector3(player.transform.position);
             
             NetworkManager.Singleton.Server.SendToAll(message);
         }
