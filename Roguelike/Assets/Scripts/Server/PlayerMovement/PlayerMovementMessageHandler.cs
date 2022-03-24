@@ -13,7 +13,7 @@ namespace Server.PlayerMovement
             Players.Dictionary.TryGetValue(playerId, out var player);
             if (player != null)
             {
-                player.GetComponent<Server.PlayerMovement.PlayerMovement>().Dash(dashDirection);
+                player.GetComponent<PlayerMovement>().Dash(dashDirection);
             }
         }
         
@@ -24,7 +24,7 @@ namespace Server.PlayerMovement
             Players.Dictionary.TryGetValue(playerId, out var player);
             if (player == null) return;
             
-            player.GetComponent<Server.PlayerMovement.PlayerMovement>().Move(moveDirection);
+            player.GetComponent<PlayerMovement>().Move(moveDirection);
             SendPosition(playerId);
         }
 

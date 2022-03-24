@@ -9,8 +9,6 @@ namespace Client
     {
         [SerializeField] private ushort port;
         [SerializeField] private string ip;
-
-        private bool _isClientRunning;
         public RiptideNetworking.Client Client { get; set; }
 
         public enum ServerToClientId : ushort
@@ -48,16 +46,14 @@ namespace Client
         private void Awake()
         {
             Singleton = this;
-            _isClientRunning = false;
+            
+            Client = new RiptideNetworking.Client();
         }
 
         public void StartClient()
         {
             RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
 
-            _isClientRunning = true;
-            Client = new RiptideNetworking.Client();
-            
             Client.Connected += OnConnection;
 
             Client.Connect($"{ip}:{port}");
@@ -72,18 +68,16 @@ namespace Client
 
         private void FixedUpdate()
         {
-            if (!_isClientRunning) return;
+            if (Client.IsNotConnected) return;
             
             Client.Tick();
         }
 
         private void OnApplicationQuit()
         {
-            if (!_isClientRunning) return;
+            if (Client.IsConnected) return;
             
             Client.Disconnect();
-            
-            _isClientRunning = false;
         }
     }
 }

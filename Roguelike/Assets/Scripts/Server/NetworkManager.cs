@@ -9,8 +9,7 @@ namespace Server
     {
         [SerializeField] private ushort port;
         [SerializeField] private ushort maxClientCount;
-
-        private bool _isServerRunning;
+        
         public RiptideNetworking.Server Server { get; set; }
 
         public enum ServerToClientId : ushort
@@ -48,7 +47,7 @@ namespace Server
         private void Awake()
         {
             Singleton = this;
-            _isServerRunning = false;
+            Server = new RiptideNetworking.Server();
         }
 
         public void StartServer()
@@ -57,8 +56,6 @@ namespace Server
 
             RiptideLogger.Initialize(Debug.Log, Debug.Log, Debug.LogWarning, Debug.LogError, false);
 
-            _isServerRunning = true;
-            Server = new RiptideNetworking.Server();
             Server.Start(port, maxClientCount);
             Server.ClientDisconnected += OnClientDisconnect;
         }
@@ -90,17 +87,16 @@ namespace Server
 
         private void FixedUpdate()
         {
-            if (!_isServerRunning) return;
+            if (!Server.IsRunning) return;
             
             Server.Tick();
         }
 
         private void OnApplicationQuit()
         {
-            if (!_isServerRunning) return;
+            if (!Server.IsRunning) return;
             
             Server.Stop();
-            _isServerRunning = false;
         }
     }
 }
